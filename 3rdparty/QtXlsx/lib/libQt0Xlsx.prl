@@ -1,0 +1,6 @@
+QMAKE_PRL_BUILD_DIR = /home/pi/proyecto/RaspiBrew/3rdparty/qtxlsx/src/xlsx
+QMAKE_PRO_INPUT = xlsx.pro
+QMAKE_PRL_TARGET = libQt0Xlsx.so.0.3.0
+QMAKE_PRL_CONFIG = lex yacc depend_includepath testcase_targets import_plugins import_qpa_plugin qt warn_on release link_prl incremental shared qpa no_mocdepend release qt_no_framework linux unix posix gcc git_build compile_examples system-sqlite qpa largefile nostrip precompile_header pcre use_libmysqlclient_r prefix_build force_independent create_prl link_prl prepare_docs qt_docs_targets no_private_qt_headers_warning QTDIR_build exceptions_off testcase_exceptions need_fwd_pri qt_install_module qt_install_headers qmake_cache target_qt create_cmake compiler_supports_fpmath c++11 hide_symbols bsymbolic_functions create_pc create_libtool explicitlib build_xlsx_lib have_target dll thread opengl moc resources
+QMAKE_PRL_VERSION = 0.3.0
+QMAKE_PRL_LIBS = -lQt5Gui -lQt5Core -lpthread 

@@ -1,0 +1,14 @@
+prefix=/usr
+exec_prefix=${prefix}
+libdir=${prefix}/lib/arm-linux-gnueabihf
+includedir=${prefix}/include/arm-linux-gnueabihf/qt5
+
+
+Name: Qt0 Xlsx
+Description: Qt Xlsx module
+Version: 0.3.0
+Libs: -lQt0Xlsx 
+Libs.private: -lQt5Gui -lQt5Core -lpthread -lGLESv2  
+Cflags: -I${includedir}/QtXlsx -I${includedir}
+Requires: Qt5Core Qt5Gui
+
