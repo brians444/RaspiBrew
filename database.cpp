@@ -713,18 +713,6 @@ bool DataBase::ingresarRemitoSalida(QList<MyStock> lista, RemitoOut remito)
 */
 
 /*
-int DataBase::getNextRemitoOut()
-{
-    QString cad;
-    cad.append("SELECT max(id) FROM remito_salida;");
-    QSqlQuery q;
-    q.prepare(cad);
-    bool ok = q.exec();
-
-    q.first();
-    return (q.record().value(0).toInt()+1);
-}
-
 int DataBase::getNextInformeSalidaMaterial()
 {
     QString cad;
@@ -743,25 +731,39 @@ QList<historic_record> DataBase::getHistory(int fermentador, QDateTime f1, QDate
     QList<historic_record> lista;
     lista.clear();
     QString cad;
+
     cad.append("SELECT tiempo, temp"+QString::number(fermentador)+" FROM registro WHERE tiempo > '"
-               +QString::number(f1.toTime_t())+"' AND tiempo < '"+QString::number(f2.toTime_t())+"' ;");
+               +f1.toString("yyyy-MM-dd hh:mm:ss")+"' AND tiempo < '"+f2.toString("yyyy-MM-dd hh:mm:ss")+"' ;");
+    // Formato en que guarda la base de datos : 2017-06-26 01:50:11
+
+    #ifdef DEBUG
+    qDebug() << f1.toString();
+    qDebug() <<f1.toString("yyyy-MM-dd hh:mm:ss");
     qDebug() << cad;
+    #endif
     QSqlQuery q;
     q.prepare(cad);
     bool ok = q.exec();
     if(ok)
     {
-        cad.clear(); cad.append("temp");
-        cad.append(QString::number(fermentador));
+
+
+        cad.clear(); cad.append("temp"); cad.append(QString::number(fermentador));
         int field1 = q.record().indexOf("tiempo");
         int field2 = q.record().indexOf(cad);
-        q.first();
+
+        #ifdef DEBUG
+        qDebug() << "Query OK";
+        qDebug() << "Query OK Campo1(tiempo)="<<field1<<" Campo2("<<cad<<")="<<field2;
+        #endif
         while(q.next())
         {
             historic_record tmp;
-            qDebug() << "Query OK";
-            tmp.ti = q.value(field1).toDouble();
-            tmp.value = q.value(field2).toDouble();
+            #ifdef DEBUG
+            qDebug() << "Valores - X="<<q.value("tiempo").toString()<<"  Y="<<q.value(field2).toString();
+            #endif
+            tmp.ti = q.value(field1).toDateTime().toTime_t();
+            tmp.value = q.value(field2).toString().replace(',', ".").toDouble();
             lista.append(tmp);
         }
     }

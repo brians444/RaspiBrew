@@ -10,6 +10,7 @@ struct conf{
     uint8_t habilitado; // Utilizo los bits como booleanos
     uint8_t fulltime;
     float temp[2];
+    uint8_t cte1, cte2, cte3, cte4;
 };
 
 struct sensores{

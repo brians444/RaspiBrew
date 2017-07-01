@@ -34,33 +34,6 @@
 
 
 /******************************************************************************************************************/
-/* Slot for fail to open the port */
-/******************************************************************************************************************/
-/*void MainWindow::portOpenedFail()
-{
-    //qDebug() << "Port cannot be open signal received!";
-    ui->statusBar->showMessage("No se puede abrir el puerto!");
-}
-/******************************************************************************************************************/
-
-
-/******************************************************************************************************************/
-/* Slot for closing the port */
-/******************************************************************************************************************/
-/*void MainWindow::onPortClosed()
-{
-    //qDebug() << "Port closed signal received!";
-    updateTimer.stop();
-    connected = false;
-    disconnect(serialPort, SIGNAL(readyRead()), this, SLOT(readData()));
-    disconnect(this, SIGNAL(portOpenOK()), this, SLOT(portOpenedSuccess()));             // Disconnect port signals to GUI slots
-    disconnect(this, SIGNAL(portOpenFail()), this, SLOT(portOpenedFail()));
-    disconnect(this, SIGNAL(portClosed()), this, SLOT(onPortClosed()));
-    disconnect(this, SIGNAL(newData(QStringList)), this, SLOT(onNewDataArrived(QStringList)));
-}
-
-
-/******************************************************************************************************************/
 /* Number of axes combo; when changed, display axes colors in status bar */
 /******************************************************************************************************************/
 void MainWindow::on_comboAxes_currentIndexChanged(int index)
@@ -165,8 +138,13 @@ void MainWindow::createUI()
     {
         edit_target[i]->setMaximum(40.00);
         edit_target[i]->setMinimum(-10.00);
-
     }
+
+
+
+
+    ui->fecha1Historico->setDate(QDate::currentDate().addMonths(-1));
+    ui->fecha2Historico->setDateTime(QDateTime::currentDateTime());
 }
 /******************************************************************************************************************/
 
@@ -247,3 +225,93 @@ void MainWindow::UpdateConfig()
 {
 
 }
+
+
+void MainWindow::on_verticalSlider_valueChanged(int value)
+{
+    edit_target[0]->setValue(CalcRange(value));
+    ui->progressBar->setValue(value);
+}
+
+void MainWindow::on_verticalSlider_2_valueChanged(int value)
+{
+    edit_target[1]->setValue(CalcRange(value));
+    //ui->progressBar->setValue(value);
+}
+
+void MainWindow::on_verticalSlider_3_valueChanged(int value)
+{
+    edit_target[2]->setValue(CalcRange(value));
+    //ui->progressBar->setValue(value);
+}
+
+void MainWindow::on_verticalSlider_4_valueChanged(int value)
+{
+    edit_target[3]->setValue(CalcRange(value));
+    //ui->progressBar->setValue(value);
+}
+
+void MainWindow::on_verticalSlider_5_valueChanged(int value)
+{
+    edit_target[4]->setValue(CalcRange(value));
+    //ui->progressBar->setValue(value);
+}
+
+void MainWindow::on_verticalSlider_6_valueChanged(int value)
+{
+    edit_target[5]->setValue(CalcRange(value));
+    //ui->progressBar->setValue(value);
+}
+
+void MainWindow::on_verticalSlider_7_valueChanged(int value)
+{
+    edit_target[6]->setValue(CalcRange(value));
+    //ui->progressBar->setValue(value);
+}
+
+void MainWindow::on_verticalSlider_8_valueChanged(int value)
+{
+    edit_target[7]->setValue(CalcRange(value));
+    //ui->progressBar->setValue(value);
+}
+
+void MainWindow::on_doubleSpinBox_valueChanged(double arg1)
+{
+    sliders[0]->setValue(CalcRange(arg1));
+}
+
+void MainWindow::on_doubleSpinBox_2_valueChanged(double arg1)
+{
+    sliders[1]->setValue(CalcRange(arg1));
+}
+
+void MainWindow::on_doubleSpinBox_3_valueChanged(double arg1)
+{
+    sliders[2]->setValue(CalcRange(arg1));
+}
+
+void MainWindow::on_doubleSpinBox_4_valueChanged(double arg1)
+{
+    sliders[3]->setValue(CalcRange(arg1));
+}
+
+void MainWindow::on_doubleSpinBox_5_valueChanged(double arg1)
+{
+    sliders[4]->setValue(CalcRange(arg1));
+}
+
+void MainWindow::on_doubleSpinBox_6_valueChanged(double arg1)
+{
+    sliders[5]->setValue(CalcRange(arg1));
+}
+
+void MainWindow::on_doubleSpinBox_7_valueChanged(double arg1)
+{
+    sliders[6]->setValue(CalcRange(arg1));
+}
+
+void MainWindow::on_doubleSpinBox_8_valueChanged(double arg1)
+{
+    sliders[7]->setValue(CalcRange(arg1));
+}
+

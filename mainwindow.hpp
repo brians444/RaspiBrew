@@ -155,6 +155,7 @@ private:
     int h;
     void createUI();                                                                      // Populate the controls
     void crearGrafico();                                                                     // Setup the QCustomPlot
+    void crearGraficoHistorico();                                                                     // Setup the QCustomPlot
 
     void SetActualTemp(int fermentador, double temp);
     void UpdateTemps();

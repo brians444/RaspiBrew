@@ -222,9 +222,17 @@ void nRFTask::Leer(long cmd)
                     qDebug()<<"habilitado= "<< configuracion.fulltime;
                     qDebug()<<"calor= "<< configuracion.calor;
                     qDebug()<<"habilitado= "<< configuracion.frio;
-                    emit ConfigGetReady(configuracion);
-                    estado = END_TRANSMISSION;
-                    this->sleep(2); //Delay after payload responded to, minimize RPi CPU time
+                    if(configuracion.cte1 == 0xF0 && configuracion.cte4 == 0x0F && configuracion.cte3 == 0x11 && configuracion.cte2 == 0x99)
+                    {
+                        emit ConfigGetReady(configuracion);
+                        estado = END_TRANSMISSION;
+                        this->sleep(2); //Delay after payload responded to, minimize RPi CPU time
+                    }
+                    else
+                    {
+                        estado = WAIT_START;
+                        this->sleep(2); //Delay after payload responded to, minimize RPi CPU time
+                    }
                 break;
             }
         }

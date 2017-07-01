@@ -46,6 +46,11 @@ void MainWindow::crearGrafico()
         ui->plot->addGraph();
         ui->plot->graph(i)->setPen(colores[i]);
     }
+    ui->plot->xAxis->setLabel("Tiempo");
+    ui->plot->yAxis->setLabel("Temperatura ( ºC )");
+
+
+
 
 }
 /******************************************************************************************************************/

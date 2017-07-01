@@ -43,7 +43,6 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->plot, SIGNAL(mouseRelease(QMouseEvent*)), this, SLOT(onMouseMoveInPlot(QMouseEvent*)));
 
     h = 0;
-
     serialPort = NULL;                                                                    // Set serial port pointer to NULL initially
     //connect(&updateTimer, SIGNAL(timeout()), this, SLOT(replot()));                       // Connect update timer to replot slot
     ui->saveJPGButton->setEnabled(1);
@@ -67,10 +66,7 @@ MainWindow::MainWindow(QWidget *parent) :
     // Conectar Slots
     // Inicio Tarea
     task->start();
-    /*
-    updateTimer.setInterval(5000);
-    updateTimer.start();
-    */
+
 
 }
 /******************************************************************************************************************/
@@ -117,21 +113,22 @@ void MainWindow::onNewDataArrived(sensores newData)
         for(int i=0; i < CANT; i++)
         {
             if(habilitado[i] == true)
-	    {
-		double tmp = newData.temp[i];
-		if(tmp > -50.00)
-		{
-        	        double now = QDateTime::currentDateTime().toTime_t();
-                    //ui->plot->graph(i)->setPen(colores[i]);
-	                ui->plot->graph(i)->addData(now, tmp);
-                    // ui->plot->rescaleAxes();
-                    ui->plot->xAxis->rescale();
-        	        //ui->plot->graph(i)->setValueAxis();
-	                //ui->plot->graph(i)->removeDataBefore(dataPointNumber - NUMBER_OF_POINTS);
-                	ui->plot->replot();
-		}
+            {
+            double tmp = newData.temp[i];
+            if(tmp > -50.00)
+            {
+                        double now = QDateTime::currentDateTime().toTime_t();
+                        //ui->plot->graph(i)->setPen(colores[i]);
+                        ui->plot->graph(i)->addData(now, tmp);
+                        // ui->plot->rescaleAxes();
+                        //ui->plot->graph(i)->setValueAxis();
+                        //ui->plot->graph(i)->removeDataBefore(dataPointNumber - NUMBER_OF_POINTS);
+
+            }
             }
         }
+        ui->plot->xAxis->rescale();
+        ui->plot->replot();
         qDebug() <<"END Data Arrive";
     }
 }
@@ -174,103 +171,3 @@ int MainWindow::CalcRange(double value)
     return (int)((value/res)+20);
 }
 
-void MainWindow::on_verticalSlider_valueChanged(int value)
-{
-    edit_target[0]->setValue(CalcRange(value));
-    ui->progressBar->setValue(value);
-}
-
-void MainWindow::on_verticalSlider_2_valueChanged(int value)
-{
-    edit_target[1]->setValue(CalcRange(value));
-    //ui->progressBar->setValue(value);
-}
-
-void MainWindow::on_verticalSlider_3_valueChanged(int value)
-{
-    edit_target[2]->setValue(CalcRange(value));
-    //ui->progressBar->setValue(value);
-}
-
-void MainWindow::on_verticalSlider_4_valueChanged(int value)
-{
-    edit_target[3]->setValue(CalcRange(value));
-    //ui->progressBar->setValue(value);
-}
-
-void MainWindow::on_verticalSlider_5_valueChanged(int value)
-{
-    edit_target[4]->setValue(CalcRange(value));
-    //ui->progressBar->setValue(value);
-}
-
-void MainWindow::on_verticalSlider_6_valueChanged(int value)
-{
-    edit_target[5]->setValue(CalcRange(value));
-    //ui->progressBar->setValue(value);
-}
-
-void MainWindow::on_verticalSlider_7_valueChanged(int value)
-{
-    edit_target[6]->setValue(CalcRange(value));
-    //ui->progressBar->setValue(value);
-}
-
-void MainWindow::on_verticalSlider_8_valueChanged(int value)
-{
-    edit_target[7]->setValue(CalcRange(value));
-    //ui->progressBar->setValue(value);
-}
-
-void MainWindow::on_doubleSpinBox_valueChanged(double arg1)
-{
-    sliders[0]->setValue(CalcRange(arg1));
-}
-
-void MainWindow::on_doubleSpinBox_2_valueChanged(double arg1)
-{
-    sliders[1]->setValue(CalcRange(arg1));
-}
-
-void MainWindow::on_doubleSpinBox_3_valueChanged(double arg1)
-{
-    sliders[2]->setValue(CalcRange(arg1));
-}
-
-void MainWindow::on_doubleSpinBox_4_valueChanged(double arg1)
-{
-    sliders[3]->setValue(CalcRange(arg1));
-}
-
-void MainWindow::on_doubleSpinBox_5_valueChanged(double arg1)
-{
-    sliders[4]->setValue(CalcRange(arg1));
-}
-
-void MainWindow::on_doubleSpinBox_6_valueChanged(double arg1)
-{
-    sliders[5]->setValue(CalcRange(arg1));
-}
-
-void MainWindow::on_doubleSpinBox_7_valueChanged(double arg1)
-{
-    sliders[6]->setValue(CalcRange(arg1));
-}
-
-void MainWindow::on_doubleSpinBox_8_valueChanged(double arg1)
-{
-    sliders[7]->setValue(CalcRange(arg1));
-}
-
-void MainWindow::on_showHistButton_clicked()
-{
-    // Obtengo los datos de la base de datos entre las fechas
-    int fermentador = ui->numberFermHistoric->currentText().toInt();
-    QDateTime f1, f2;
-    f1 = ui->fecha1Historico->dateTime();
-    f2 = ui->fecha2Historico->dateTime();
-    qDebug() <<"Mostrando Historico del fermentador"<<fermentador<<" entre "<<f1.toString()<<" hasta "<<f2.toString();
-    QList<historic_record> lista = db->getHistory(fermentador, f1, f2);
-    qDebug()<< "Tamaño de lista recibida: "<<lista.size();
-
-}
