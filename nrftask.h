@@ -37,8 +37,8 @@ public slots:
     void GetTarget();
     void GetConfig();
 
-    void SetTarget();
-    void SetConfig();
+    void SetTarget(target );
+    void SetConfig(conf );
 
 
 signals:
@@ -71,6 +71,7 @@ private:
 
     unsigned long cmd;
     target obj;
+    conf updatedConf;
 };
 
 #endif // NRFTASK_H

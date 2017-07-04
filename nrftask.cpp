@@ -294,8 +294,9 @@ void nRFTask::SetTarget(target ss)
     set_target_status = 1;
 }
 
-void nRFTask::SetConfig()
+void nRFTask::SetConfig(conf ss)
 {
+
     set_config_status = 1;
 
 }
