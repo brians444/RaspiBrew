@@ -51,6 +51,10 @@ RF24 radio(RPI_BPLUS_GPIO_J8_15,RPI_BPLUS_GPIO_J8_24, BCM2835_SPI_SPEED_8MHZ);
 
 nRFTask::nRFTask()
 {
+    qRegisterMetaType<sensores>("sensores");
+    qRegisterMetaType<conf>("conf");
+    qRegisterMetaType<target>("target");
+
     /********** User Config *********/
     // Assign a unique identifier for this node, 0 or 1
     radioNumber = 1;
@@ -97,8 +101,6 @@ void nRFTask::Leer(long cmd)
     {
         estado = WAIT_START;
         var++;
-        if(var>3)
-            var=0;
     }
 #endif
 
@@ -221,9 +223,7 @@ void nRFTask::WaitingInit(long cmd)
 
 void nRFTask::run()
 {
-    qRegisterMetaType<sensores>("sensores");
-    qRegisterMetaType<conf>("conf");
-    qRegisterMetaType<target>("target");
+
     while(1)
     {
         if(var == 0)
@@ -238,9 +238,13 @@ void nRFTask::run()
         {
             Leer(GET_TARGET);
         }
-        else if(var==3)
+        else if(var==3 && set_target_status == 0x01)
         {
             EnviarTarget(obj);
+        }
+        else
+        {
+            var = 0;
         }
     }
 }
@@ -284,10 +288,10 @@ void nRFTask::GetConfig()
 
 }
 
-void nRFTask::SetTarget()
+void nRFTask::SetTarget(target ss)
 {
+    this->obj = ss;
     set_target_status = 1;
-
 }
 
 void nRFTask::SetConfig()
@@ -314,6 +318,7 @@ void nRFTask::EnviarTarget(target t)
         if(resp)
         {
             qDebug()<<"Transmision Target OK\n";
+            set_target_status = 0;
         }
         else
         {
@@ -326,8 +331,7 @@ void nRFTask::EnviarTarget(target t)
     }
     radio.startListening();
 #endif
-    var = 0;
-
+    var++;
 }
 
 void nRFTask::SimuloRecepcion(long cmd, long estado)
