@@ -51,6 +51,9 @@ private:
     int estado;
     char var =0;
 
+    char get_target_status, get_config_status;
+    char set_target_status, set_config_status;
+
     sensores sens;
     conf configuracion;
     target st_target;
@@ -59,6 +62,8 @@ private:
     void Leer(long cmd);
     void EnviarTarget(target t);
     void SimuloRecepcion(long cmd, long estado);
+    void WaitingResponse(long );
+    void WaitingInit(long );
 
 
     uint64_t pipes[2];

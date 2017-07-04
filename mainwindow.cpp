@@ -171,3 +171,12 @@ int MainWindow::CalcRange(double value)
     return (int)((value/res)+20);
 }
 
+void MainWindow::on_updateConfigButton_clicked()
+{
+    this->task->GetConfig();
+}
+
+void MainWindow::on_getTargetUpdateButton_clicked()
+{
+    this->task->GetTarget();
+}

@@ -30,7 +30,7 @@
     <item row="0" column="1">
      <widget class="QTabWidget" name="tabWidget">
       <property name="currentIndex">
-       <number>2</number>
+       <number>3</number>
       </property>
       <widget class="QWidget" name="tab_5">
        <attribute name="title">
@@ -1180,6 +1180,402 @@
         <item>
          <layout class="QVBoxLayout" name="controlsLayout">
           <item>
+           <widget class="QGroupBox" name="configControllerBox">
+            <property name="title">
+             <string>CONFIGURACION DE CONTROLADOR</string>
+            </property>
+            <layout class="QGridLayout" name="gridLayout_17">
+             <item row="0" column="0">
+              <layout class="QGridLayout" name="gridLayout_16">
+               <item row="5" column="1">
+                <widget class="QLineEdit" name="salidaFrioLineEdit_5"/>
+               </item>
+               <item row="1" column="1">
+                <widget class="QLineEdit" name="salidaFrioLineEdit"/>
+               </item>
+               <item row="3" column="1">
+                <widget class="QLineEdit" name="salidaFrioLineEdit_3"/>
+               </item>
+               <item row="4" column="1">
+                <widget class="QLineEdit" name="salidaFrioLineEdit_4"/>
+               </item>
+               <item row="2" column="1">
+                <widget class="QLineEdit" name="salidaFrioLineEdit_2"/>
+               </item>
+               <item row="3" column="0">
+                <widget class="QLabel" name="label_35">
+                 <property name="text">
+                  <string>3</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="1" column="0">
+                <widget class="QLabel" name="label_32">
+                 <property name="text">
+                  <string>1</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="0" column="4">
+                <widget class="QLabel" name="label_50">
+                 <property name="text">
+                  <string>CONTROL FRIO</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="0" column="3">
+                <widget class="QLabel" name="label_49">
+                 <property name="text">
+                  <string>HABILITADO</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="0" column="5">
+                <widget class="QLabel" name="label_51">
+                 <property name="text">
+                  <string>CONTROL CALOR</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="0" column="6">
+                <widget class="QLabel" name="label_52">
+                 <property name="text">
+                  <string>TextLabel</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="6" column="0">
+                <widget class="QLabel" name="label_45">
+                 <property name="text">
+                  <string>6</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="0" column="0">
+                <widget class="QLabel" name="label_41">
+                 <property name="text">
+                  <string>CANAL</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="0" column="2">
+                <widget class="QLabel" name="label_48">
+                 <property name="text">
+                  <string>SALIDA CALOR</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="0" column="1">
+                <widget class="QLabel" name="label_39">
+                 <property name="text">
+                  <string>SALIDA FRIO</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="5" column="0">
+                <widget class="QLabel" name="label_42">
+                 <property name="text">
+                  <string>5</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="4" column="0">
+                <widget class="QLabel" name="label_36">
+                 <property name="text">
+                  <string>4</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="7" column="0">
+                <widget class="QLabel" name="label_46">
+                 <property name="text">
+                  <string>7</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="8" column="0">
+                <widget class="QLabel" name="label_47">
+                 <property name="text">
+                  <string>8</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="2" column="0">
+                <widget class="QLabel" name="label_4">
+                 <property name="text">
+                  <string>2</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="6" column="1">
+                <widget class="QLineEdit" name="salidaFrioLineEdit_6"/>
+               </item>
+               <item row="7" column="1">
+                <widget class="QLineEdit" name="salidaFrioLineEdit_7"/>
+               </item>
+               <item row="8" column="1">
+                <widget class="QLineEdit" name="salidaFrioLineEdit_8"/>
+               </item>
+               <item row="1" column="2">
+                <widget class="QLineEdit" name="salidaCalorLineEdit"/>
+               </item>
+               <item row="2" column="2">
+                <widget class="QLineEdit" name="salidaCalorLineEdit_2"/>
+               </item>
+               <item row="3" column="2">
+                <widget class="QLineEdit" name="salidaCalorLineEdit_3"/>
+               </item>
+               <item row="4" column="2">
+                <widget class="QLineEdit" name="salidaCalorLineEdit_4"/>
+               </item>
+               <item row="5" column="2">
+                <widget class="QLineEdit" name="salidaCalorLineEdit_5"/>
+               </item>
+               <item row="6" column="2">
+                <widget class="QLineEdit" name="salidaCalorLineEdit_6"/>
+               </item>
+               <item row="7" column="2">
+                <widget class="QLineEdit" name="salidaCalorLineEdit_7"/>
+               </item>
+               <item row="8" column="2">
+                <widget class="QLineEdit" name="salidaCalorLineEdit_8"/>
+               </item>
+               <item row="1" column="3">
+                <widget class="QCheckBox" name="habilitadoCheckBox1">
+                 <property name="text">
+                  <string>1</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="2" column="3">
+                <widget class="QCheckBox" name="habilitadoCheckBox2">
+                 <property name="text">
+                  <string>2</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="3" column="3">
+                <widget class="QCheckBox" name="habilitadoCheckBox3">
+                 <property name="text">
+                  <string>3</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="4" column="3">
+                <widget class="QCheckBox" name="habilitadoCheckBox4">
+                 <property name="text">
+                  <string>4</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="5" column="3">
+                <widget class="QCheckBox" name="habilitadoCheckBox5">
+                 <property name="text">
+                  <string>5</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="6" column="3">
+                <widget class="QCheckBox" name="habilitadoCheckBox6">
+                 <property name="text">
+                  <string>6</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="7" column="3">
+                <widget class="QCheckBox" name="habilitadoCheckBox7">
+                 <property name="text">
+                  <string>7</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="8" column="3">
+                <widget class="QCheckBox" name="habilitadoCheckBox8">
+                 <property name="text">
+                  <string>8</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="1" column="4">
+                <widget class="QCheckBox" name="frioCheckBox">
+                 <property name="text">
+                  <string>FRIO</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="2" column="4">
+                <widget class="QCheckBox" name="frioCheckBox_2">
+                 <property name="text">
+                  <string>FRIO</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="3" column="4">
+                <widget class="QCheckBox" name="frioCheckBox_3">
+                 <property name="text">
+                  <string>FRIO</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="4" column="4">
+                <widget class="QCheckBox" name="frioCheckBox_4">
+                 <property name="text">
+                  <string>FRIO</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="5" column="4">
+                <widget class="QCheckBox" name="frioCheckBox_5">
+                 <property name="text">
+                  <string>FRIO</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="6" column="4">
+                <widget class="QCheckBox" name="frioCheckBox_6">
+                 <property name="text">
+                  <string>FRIO</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="7" column="4">
+                <widget class="QCheckBox" name="frioCheckBox_7">
+                 <property name="text">
+                  <string>FRIO</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="8" column="4">
+                <widget class="QCheckBox" name="frioCheckBox_8">
+                 <property name="text">
+                  <string>FRIO</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="1" column="5">
+                <widget class="QCheckBox" name="calorCheckBox">
+                 <property name="text">
+                  <string>CALOR</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="2" column="5">
+                <widget class="QCheckBox" name="calorCheckBox_2">
+                 <property name="text">
+                  <string>CALOR</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="3" column="5">
+                <widget class="QCheckBox" name="calorCheckBox_3">
+                 <property name="text">
+                  <string>CALOR</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="4" column="5">
+                <widget class="QCheckBox" name="calorCheckBox_4">
+                 <property name="text">
+                  <string>CALOR</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="5" column="5">
+                <widget class="QCheckBox" name="calorCheckBox_5">
+                 <property name="text">
+                  <string>CALOR</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="6" column="5">
+                <widget class="QCheckBox" name="calorCheckBox_6">
+                 <property name="text">
+                  <string>CALOR</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="7" column="5">
+                <widget class="QCheckBox" name="calorCheckBox_7">
+                 <property name="text">
+                  <string>CALOR</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="8" column="5">
+                <widget class="QCheckBox" name="calorCheckBox_8">
+                 <property name="text">
+                  <string>CALOR</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item row="1" column="0">
+              <layout class="QHBoxLayout" name="horizontalLayout_3">
+               <item>
+                <widget class="QLabel" name="label_54">
+                 <property name="text">
+                  <string>Temperaturas sensores extra:</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLabel" name="temp9Label">
+                 <property name="text">
+                  <string>Temp9</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLabel" name="temp10Label">
+                 <property name="text">
+                  <string>Temp10</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <spacer name="horizontalSpacer">
+                 <property name="orientation">
+                  <enum>Qt::Horizontal</enum>
+                 </property>
+                 <property name="sizeType">
+                  <enum>QSizePolicy::Fixed</enum>
+                 </property>
+                 <property name="sizeHint" stdset="0">
+                  <size>
+                   <width>40</width>
+                   <height>20</height>
+                  </size>
+                 </property>
+                </spacer>
+               </item>
+               <item>
+                <widget class="QCheckBox" name="checkBox">
+                 <property name="text">
+                  <string>Full Time Control</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QPushButton" name="updateConfigButton">
+                 <property name="text">
+                  <string>Actualizar Configuracion</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QPushButton" name="pushButton">
+                 <property name="text">
+                  <string>Enviar Cambios</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item>
            <widget class="QGroupBox" name="PlotControlsBox">
             <property name="title">
              <string>CONTROLES DEL GRAFICO</string>
@@ -1560,6 +1956,13 @@
                   </layout>
                  </item>
                 </layout>
+               </item>
+               <item>
+                <widget class="QPushButton" name="getTargetUpdateButton">
+                 <property name="text">
+                  <string>Actualizar Temperaturas Objetivos</string>
+                 </property>
+                </widget>
                </item>
                <item>
                 <widget class="QPushButton" name="resetPlotButton">

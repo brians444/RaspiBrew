@@ -145,6 +145,53 @@ void MainWindow::createUI()
 
     ui->fecha1Historico->setDate(QDate::currentDate().addMonths(-1));
     ui->fecha2Historico->setDateTime(QDateTime::currentDateTime());
+
+    salidaAct[0] = ui->habilitadoCheckBox1;
+    salidaAct[1] = ui->habilitadoCheckBox2;
+    salidaAct[2] = ui->habilitadoCheckBox3;
+    salidaAct[3] = ui->habilitadoCheckBox4;
+    salidaAct[4] = ui->habilitadoCheckBox5;
+    salidaAct[5] = ui->habilitadoCheckBox6;
+    salidaAct[6] = ui->habilitadoCheckBox7;
+    salidaAct[7] = ui->habilitadoCheckBox8;
+
+    frioHab[0] = ui->frioCheckBox;
+    frioHab[1] = ui->frioCheckBox_2;
+    frioHab[2] = ui->frioCheckBox_3;
+    frioHab[3] = ui->frioCheckBox_4;
+    frioHab[4] = ui->frioCheckBox_5;
+    frioHab[5] = ui->frioCheckBox_6;
+    frioHab[6] = ui->frioCheckBox_7;
+    frioHab[7] = ui->frioCheckBox_8;
+
+    calorHab[0] = ui->calorCheckBox;
+    calorHab[1] = ui->calorCheckBox_2;
+    calorHab[2] = ui->calorCheckBox_3;
+    calorHab[3] = ui->calorCheckBox_4;
+    calorHab[4] = ui->calorCheckBox_5;
+    calorHab[5] = ui->calorCheckBox_6;
+    calorHab[6] = ui->calorCheckBox_7;
+    calorHab[7] = ui->calorCheckBox_8;
+
+    frioSal[0] = ui->salidaFrioLineEdit;
+    frioSal[1] = ui->salidaFrioLineEdit_2;
+    frioSal[2] = ui->salidaFrioLineEdit_3;
+    frioSal[3] = ui->salidaFrioLineEdit_4;
+    frioSal[4] = ui->salidaFrioLineEdit_5;
+    frioSal[5] = ui->salidaFrioLineEdit_6;
+    frioSal[6] = ui->salidaFrioLineEdit_7;
+    frioSal[7] = ui->salidaFrioLineEdit_8;
+
+    calorSal[0] = ui->salidaCalorLineEdit;
+    calorSal[1] = ui->salidaCalorLineEdit_2;
+    calorSal[2] = ui->salidaCalorLineEdit_3;
+    calorSal[3] = ui->salidaCalorLineEdit_4;
+    calorSal[4] = ui->salidaCalorLineEdit_5;
+    calorSal[5] = ui->salidaCalorLineEdit_6;
+    calorSal[6] = ui->salidaCalorLineEdit_7;
+    calorSal[7] = ui->salidaCalorLineEdit_8;
+
+
 }
 /******************************************************************************************************************/
 
@@ -223,6 +270,64 @@ void MainWindow::UpdateTargets()
 
 void MainWindow::UpdateConfig()
 {
+/*  uint8_t frio;       // Utilizo los bits como booleanos
+    uint8_t calor;      // Utilizo los bits como booleanos
+    uint8_t salida_frio[8];
+    uint8_t salida_calor[8];
+    uint8_t habilitado; // Utilizo los bits como booleanos
+    uint8_t fulltime;
+    float temp[2];
+    QCheckBox *salidaAct[CANT];
+    QCheckBox *frioHab[CANT];
+    QCheckBox *calorHab[CANT];
+    QLineEdit *frioSal[CANT];
+    QLineEdit *calorSal[CANT];
+*/
+    uint8_t tmp;
+    uint8_t mask = 0x01;
+    for(int i = 0; i < CANT; i++)
+    {
+        mask = mask<<i;
+        qDebug() << "Mascara = "<< mask;
+        tmp = configuracion.frio&&mask;
+        qDebug() << "FRIO Luego de mascara = "<< tmp;
+        if(tmp>0)
+        {
+            frioHab[i]->setChecked(1);
+        }
+        else
+        {
+            frioHab[i]->setChecked(0);
+        }
+        tmp = configuracion.calor&&mask;
+        qDebug() << "CALOR Luego de mascara = "<< tmp;
+        if(tmp>0)
+        {
+            calorHab[i]->setChecked(1);
+        }
+        else
+        {
+            calorHab[i]->setChecked(0);
+        }
+
+        tmp = configuracion.habilitado&&mask;
+        qDebug() << "HABILITADO Luego de mascara = "<< tmp;
+        if(tmp>0)
+        {
+            salidaAct[i]->setChecked(1);
+        }
+        else
+        {
+            salidaAct[i]->setChecked(0);
+        }
+        frioSal[i]->setText(QString::number(configuracion.salida_frio[i]));
+        calorSal[i]->setText(QString::number(configuracion.salida_calor[i]));
+
+    }
+
+    ui->temp9Label->setText(QString::number(configuracion.temp[0]));
+    ui->temp10Label->setText(QString::number(configuracion.temp[1]));
+
 
 }
 

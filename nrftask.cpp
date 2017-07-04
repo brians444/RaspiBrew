@@ -70,32 +70,165 @@ nRFTask::nRFTask()
         obj.set_temp[i] = 10.00+(float)i;
     }
 
-}
-
-
-void nRFTask::GetTemp()
-{
-
-}
-
-void nRFTask::GetTarget()
-{
+    // Inicio Variables
+    get_target_status = 0;
+    get_config_status = 0;
+    set_target_status = 0;
+    set_config_status = 0;
 
 }
 
-void nRFTask::GetConfig()
+
+void nRFTask::Leer(long cmd)
 {
+    #ifndef LINUX
+    SimuloRecepcion(cmd, estado);
+    #endif
+    #ifdef LINUX
+    if(estado == WAIT_START)
+    {
+        WaitingInit(cmd);
+    }
+    else if(estado == WAITING_RESPONSE)
+    {
+        WaitingResponse(cmd);
+    }
+    else if(estado == END_TRANSMISSION)
+    {
+        estado = WAIT_START;
+        var++;
+        if(var>3)
+            var=0;
+    }
+#endif
 
 }
 
-void nRFTask::SetTarget()
+void nRFTask::WaitingResponse(long cmd)
 {
-
+#ifdef LINUX
+    if(radio.available())
+    {
+        long len = radio.getPayloadSize();
+        if(cmd == GET_TEMPS)
+        {
+            radio.read(&sens, sizeof(sens));
+            qDebug()<<"Longitud leida = %i "<< len;
+            for(int i = 0; i < CANT; i++)
+            {
+                qDebug()<<"Temperatura["<<i<<"] = "<<sens.temp[i];
+            }
+            emit TempGetReady(sens);
+            estado = END_TRANSMISSION;
+            this->sleep(2); //Delay after payload responded to, minimize RPi CPU time
+        }
+        else if(cmd == GET_TARGET)
+        {
+        // Aca quedamooooos 03/07/2017
+            if(get_target_status &0x01 == 0x01)
+            {
+                radio.read(&st_target, sizeof(st_target));
+                printf("Longitud leida = %l \n\n", len);
+                for(int i = 0; i < CANT; i++)
+                {
+                    qDebug()<<"Temperatura objetivo["<<i<<"] = "<<st_target.set_temp[i];
+                }
+                emit TargetGetReady(st_target);
+                get_target_status = 0;
+                estado = END_TRANSMISSION;
+            }
+            else
+            {
+                estado = END_TRANSMISSION;
+            }
+            this->sleep(2); //Delay after payload responded to, minimize RPi CPU time
+        }
+        else if(GET_CONFIG)
+        {
+            if(get_config_status&0x01 == 0x01)
+            {
+                radio.read(&configuracion, sizeof(configuracion));
+                qDebug()<<"Longitud leida = "<< len;
+                qDebug()<<"Temperatura[9] = "<< configuracion.temp[0];
+                qDebug()<<"Temperatura[10] = "<< configuracion.temp[1];
+                qDebug()<<"salidas calor = "<< configuracion.salida_calor;
+                qDebug()<<"salidas frio = "<< configuracion.salida_frio;
+                qDebug()<<"habilitado= "<< configuracion.habilitado;
+                qDebug()<<"habilitado= "<< configuracion.fulltime;
+                qDebug()<<"calor= "<< configuracion.calor;
+                qDebug()<<"habilitado= "<< configuracion.frio;
+                if(configuracion.cte1 == 0xF0 && configuracion.cte4 == 0x0F && configuracion.cte3 == 0x11 && configuracion.cte2 == 0x99)
+                {
+                    emit ConfigGetReady(configuracion);
+                    estado = END_TRANSMISSION;
+                }
+                else
+                {
+                    estado = WAIT_START;
+                }
+            }
+            else
+            {
+                estado = END_TRANSMISSION;
+            }
+            this->sleep(2); //Delay after payload responded to, minimize RPi CPU time
+        }
+    }
+#endif
 }
 
-void nRFTask::SetConfig()
+void nRFTask::WaitingInit(long cmd)
 {
+#ifdef LINUX
+    qDebug()<<"Transmitiendo comando\n";
+    // First, stop listening so we can talk.
+    radio.stopListening();
+    radio.flush_tx();
+    sleep(5);
+    radio.writeFast(&cmd, sizeof(cmd));
+    bool ok = radio.txStandBy(1000);
+    radio.startListening();
+    if(ok)
+    {
+        qDebug()<<"Transmision comando ok\n";
+        estado = WAITING_RESPONSE;
+    this->msleep(100);
+    }
+    else
+    {
+        qDebug()<<"Transmision comando failed \n";
+        estado = WAIT_START;
+    radio.flush_tx();
+    }
+#endif
+}
 
+
+
+void nRFTask::run()
+{
+    qRegisterMetaType<sensores>("sensores");
+    qRegisterMetaType<conf>("conf");
+    qRegisterMetaType<target>("target");
+    while(1)
+    {
+        if(var == 0)
+        {
+            Leer(GET_CONFIG);
+        }
+        else if(var == 1)
+        {
+            Leer(GET_TEMPS);
+        }
+        else if(var == 2)
+        {
+            Leer(GET_TARGET);
+        }
+        else if(var==3)
+        {
+            EnviarTarget(obj);
+        }
+    }
 }
 
 
@@ -117,6 +250,38 @@ void nRFTask::radioInit()
   radio.startListening();
 #endif
 }
+
+
+
+void nRFTask::GetTemp()
+{
+
+}
+
+void nRFTask::GetTarget()
+{
+    get_target_status = 1;
+
+}
+
+void nRFTask::GetConfig()
+{
+    get_config_status = 1;
+
+}
+
+void nRFTask::SetTarget()
+{
+    set_target_status = 1;
+
+}
+
+void nRFTask::SetConfig()
+{
+    set_config_status = 1;
+
+}
+
 
 
 void nRFTask::EnviarTarget(target t)
@@ -151,129 +316,6 @@ void nRFTask::EnviarTarget(target t)
 
 }
 
-
-void nRFTask::Leer(long cmd)
-{
-    #ifndef LINUX
-    SimuloRecepcion(cmd, estado);
-    #endif
-    #ifdef LINUX
-    if(estado == WAIT_START)
-    {
-        qDebug()<<"Transmitiendo comando\n";
-        // First, stop listening so we can talk.
-        radio.stopListening();
-	radio.flush_tx();
-        sleep(5);
-        radio.writeFast(&cmd, sizeof(cmd));
-        bool ok = radio.txStandBy(1000);
-        radio.startListening();
-        if(ok)
-        {
-            qDebug()<<"Transmision comando ok\n";
-            estado = WAITING_RESPONSE;
-	    this->msleep(100);
-        }
-        else
-        {
-            qDebug()<<"Transmision comando failed \n";
-            estado = WAIT_START;
-	    radio.flush_tx();
-        }
-
-    }
-    else if(estado == WAITING_RESPONSE)
-    {
-        if(radio.available())
-        {
-            long len = radio.getPayloadSize();
-            switch(cmd)
-            {
-                case GET_TEMPS:
-                    radio.read(&sens, sizeof(sens));
-                    qDebug()<<"Longitud leida = %i "<< len;
-                    for(int i = 0; i < CANT; i++)
-                    {
-                        qDebug()<<"Temperatura["<<i<<"] = "<<sens.temp[i];
-                    }
-                    emit TempGetReady(sens);
-                    estado = END_TRANSMISSION;
-                    this->sleep(2); //Delay after payload responded to, minimize RPi CPU time
-                break;
-                case GET_TARGET:
-                    radio.read(&st_target, sizeof(st_target));
-                    printf("Longitud leida = %l \n\n", len);
-                    for(int i = 0; i < CANT; i++)
-                    {
-                        qDebug()<<"Temperatura objetivo["<<i<<"] = "<<st_target.set_temp[i];
-                    }
-                    emit TargetGetReady(st_target);
-                    estado = END_TRANSMISSION;
-                    this->sleep(2); //Delay after payload responded to, minimize RPi CPU time
-                break;
-                case GET_CONFIG:
-                    radio.read(&configuracion, sizeof(configuracion));
-                    qDebug()<<"Longitud leida = "<< len;
-                    qDebug()<<"Temperatura[9] = "<< configuracion.temp[0];
-                    qDebug()<<"Temperatura[10] = "<< configuracion.temp[1];
-                    qDebug()<<"salidas calor = "<< configuracion.salida_calor;
-                    qDebug()<<"salidas frio = "<< configuracion.salida_frio;
-                    qDebug()<<"habilitado= "<< configuracion.habilitado;
-                    qDebug()<<"habilitado= "<< configuracion.fulltime;
-                    qDebug()<<"calor= "<< configuracion.calor;
-                    qDebug()<<"habilitado= "<< configuracion.frio;
-                    if(configuracion.cte1 == 0xF0 && configuracion.cte4 == 0x0F && configuracion.cte3 == 0x11 && configuracion.cte2 == 0x99)
-                    {
-                        emit ConfigGetReady(configuracion);
-                        estado = END_TRANSMISSION;
-                        this->sleep(2); //Delay after payload responded to, minimize RPi CPU time
-                    }
-                    else
-                    {
-                        estado = WAIT_START;
-                        this->sleep(2); //Delay after payload responded to, minimize RPi CPU time
-                    }
-                break;
-            }
-        }
-    }
-    else if(estado == END_TRANSMISSION)
-    {
-        estado = WAIT_START;
-        var++;
-        if(var>3)
-            var=0;
-    }
-#endif
-
-}
-
-void nRFTask::run()
-{
-	qRegisterMetaType<sensores>("sensores");
-	qRegisterMetaType<conf>("conf");
-	qRegisterMetaType<target>("target");
-    while(1)
-    {
-        if(var == 0)
-        {
-            Leer(GET_CONFIG);
-        }
-        else if(var == 1)
-        {
-            Leer(GET_TEMPS);
-        }
-        else if(var == 2)
-        {
-            Leer(GET_TARGET);
-        }
-        else if(var==3)
-        {
-            EnviarTarget(obj);
-        }
-    }
-}
-
 void nRFTask::SimuloRecepcion(long cmd, long estado)
 {
     qDebug()<< "Simulando cmd="<<(char)cmd<<"  Estado = "<<estado;
@@ -287,25 +329,27 @@ void nRFTask::SimuloRecepcion(long cmd, long estado)
         }
         emit TempGetReady( s );
     }
-    else if(cmd == GET_TARGET)
+    else if(cmd == GET_TARGET && get_target_status ==0x01)
     {
         for(int i = 0; i < 8; i++)
         {
             st_target.set_temp[i] = 20.00;
         }
         emit TargetGetReady( st_target);
+        get_target_status =0;
     }
-    else if(cmd == GET_CONFIG)
+    else if(cmd == GET_CONFIG && get_config_status == 0x01)
     {
         configuracion.calor = 0x00;
         configuracion.frio = 0x00;
-        configuracion.fulltime = 0x00;
-        configuracion.habilitado = 0x00;
+        configuracion.fulltime = 0x01;
+        configuracion.habilitado = 0xFF;
         configuracion.salida_calor[0] = 0x00;
         configuracion.salida_frio[0] = 0x00;
         configuracion.temp[0] = 23.00;
         configuracion.temp[1] = -5.00;
         emit ConfigGetReady(configuracion);
+        get_config_status = 0;
     }
     this->sleep(4);
 

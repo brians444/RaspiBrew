@@ -86,41 +86,31 @@ private slots:
     void TargetReceived(target t);
     void ConfigReceived(conf t);
 
-
-
+    // Temperaturas Objetivos Slider
     void on_verticalSlider_valueChanged(int value);
-
     void on_verticalSlider_2_valueChanged(int value);
-
     void on_verticalSlider_3_valueChanged(int value);
-
     void on_verticalSlider_4_valueChanged(int value);
-
     void on_verticalSlider_5_valueChanged(int value);
-
     void on_verticalSlider_6_valueChanged(int value);
-
     void on_verticalSlider_7_valueChanged(int value);
-
     void on_verticalSlider_8_valueChanged(int value);
-
+    // Temperaturas Objetivos SpinBox
     void on_doubleSpinBox_valueChanged(double arg1);
-
     void on_doubleSpinBox_2_valueChanged(double arg1);
-
     void on_doubleSpinBox_3_valueChanged(double arg1);
-
     void on_doubleSpinBox_4_valueChanged(double arg1);
-
     void on_doubleSpinBox_5_valueChanged(double arg1);
-
     void on_doubleSpinBox_6_valueChanged(double arg1);
-
     void on_doubleSpinBox_7_valueChanged(double arg1);
-
     void on_doubleSpinBox_8_valueChanged(double arg1);
 
     void on_showHistButton_clicked();
+
+    void on_updateConfigButton_clicked();
+
+    void on_getTargetUpdateButton_clicked();
+
 signals:
     void newData(sensores data);                                                       // Emitted when new data has arrived
 
@@ -129,6 +119,13 @@ private:
 
     ThermoMeter *termometros[CANT];
     QLabel *temps_actuales[CANT];
+
+    QCheckBox *salidaAct[CANT];
+    QCheckBox *frioHab[CANT];
+    QCheckBox *calorHab[CANT];
+    QLineEdit *frioSal[CANT];
+    QLineEdit *calorSal[CANT];
+
 
     bool connected;                                                                       // Status connection variable
     bool plotting;                                                                        // Status plotting variable
