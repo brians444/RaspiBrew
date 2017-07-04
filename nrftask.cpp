@@ -71,7 +71,7 @@ nRFTask::nRFTask()
 
     for(int i = 0; i < CANT; i++)
     {
-        obj.set_temp[i] = 10.00+(float)i;
+        obj.set_temp[i] = 0.0;
     }
 
     // Inicio Variables
@@ -151,6 +151,7 @@ void nRFTask::WaitingResponse(long cmd)
             qDebug() << "Waiting response - cmd GET CONFIG";
             if( (get_config_status&0x01) == 0x01)
             {
+
                 radio.read(&configuracion, sizeof(configuracion));
                 qDebug()<<"Longitud leida = "<< len;
                 qDebug()<<"Temperatura[9] = "<< configuracion.temp[0];
@@ -165,6 +166,7 @@ void nRFTask::WaitingResponse(long cmd)
                 {
                     emit ConfigGetReady(configuracion);
                     estado = END_TRANSMISSION;
+                    get_config_status = 0;
                 }
                 else
                 {
@@ -195,7 +197,7 @@ void nRFTask::WaitingInit(long cmd)
     }
     else
     {
-        qDebug()<<"Transmitiendo comando\n";
+        qDebug()<<"Transmitiendo comando cmd = "<<(char)cmd;
         // First, stop listening so we can talk.
         radio.stopListening();
         radio.flush_tx();
@@ -296,7 +298,7 @@ void nRFTask::SetTarget(target ss)
 
 void nRFTask::SetConfig(conf ss)
 {
-
+    this->updatedConf = ss;
     set_config_status = 1;
 
 }

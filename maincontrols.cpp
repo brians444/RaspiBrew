@@ -287,9 +287,8 @@ void MainWindow::UpdateConfig()
     uint8_t mask = 0x01;
     for(int i = 0; i < CANT; i++)
     {
-        mask = mask<<i;
-        qDebug() << "Mascara = "<< mask;
-        tmp = configuracion.frio&&mask;
+        qDebug() << "Mascara = "<< (int)mask;
+        tmp = configuracion.frio&mask;
         qDebug() << "FRIO Luego de mascara = "<< tmp;
         if(tmp>0)
         {
@@ -299,7 +298,7 @@ void MainWindow::UpdateConfig()
         {
             frioHab[i]->setChecked(0);
         }
-        tmp = configuracion.calor&&mask;
+        tmp = configuracion.calor&mask;
         qDebug() << "CALOR Luego de mascara = "<< tmp;
         if(tmp>0)
         {
@@ -310,7 +309,7 @@ void MainWindow::UpdateConfig()
             calorHab[i]->setChecked(0);
         }
 
-        tmp = configuracion.habilitado&&mask;
+        tmp = configuracion.habilitado&mask;
         qDebug() << "HABILITADO Luego de mascara = "<< tmp;
         if(tmp>0)
         {
@@ -322,12 +321,12 @@ void MainWindow::UpdateConfig()
         }
         frioSal[i]->setText(QString::number(configuracion.salida_frio[i]));
         calorSal[i]->setText(QString::number(configuracion.salida_calor[i]));
-
+        mask = mask*2;
     }
 
     ui->temp9Label->setText(QString::number(configuracion.temp[0]));
     ui->temp10Label->setText(QString::number(configuracion.temp[1]));
-
+    ui->fullTimeCheckBox->setChecked((bool)configuracion.fulltime);
 
 }
 

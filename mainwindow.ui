@@ -1550,7 +1550,7 @@
                 </spacer>
                </item>
                <item>
-                <widget class="QCheckBox" name="checkBox">
+                <widget class="QCheckBox" name="fullTimeCheckBox">
                  <property name="text">
                   <string>Full Time Control</string>
                  </property>
