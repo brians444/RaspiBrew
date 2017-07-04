@@ -1,7 +1,7 @@
 #ifndef NRFTASK_H
 #define NRFTASK_H
 
-#undef LINUX
+#define LINUX
 
 #include <QDebug>
 #include <QObject>

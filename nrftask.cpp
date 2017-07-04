@@ -112,6 +112,7 @@ void nRFTask::WaitingResponse(long cmd)
         long len = radio.getPayloadSize();
         if(cmd == GET_TEMPS)
         {
+            qDebug() << "Waiting response - cmd GET TEMPS";
             radio.read(&sens, sizeof(sens));
             qDebug()<<"Longitud leida = %i "<< len;
             for(int i = 0; i < CANT; i++)
@@ -124,11 +125,11 @@ void nRFTask::WaitingResponse(long cmd)
         }
         else if(cmd == GET_TARGET)
         {
-        // Aca quedamooooos 03/07/2017
-            if(get_target_status &0x01 == 0x01)
+            qDebug() << "Waiting response - cmd GET TARGET";
+            if( (get_target_status &0x01) == 0x01)
             {
                 radio.read(&st_target, sizeof(st_target));
-                printf("Longitud leida = %l \n\n", len);
+                qDebug()<< "Longitud leida = "<< len <<" - COMANDO ="<<(char)cmd;
                 for(int i = 0; i < CANT; i++)
                 {
                     qDebug()<<"Temperatura objetivo["<<i<<"] = "<<st_target.set_temp[i];
@@ -145,7 +146,8 @@ void nRFTask::WaitingResponse(long cmd)
         }
         else if(GET_CONFIG)
         {
-            if(get_config_status&0x01 == 0x01)
+            qDebug() << "Waiting response - cmd GET CONFIG";
+            if( (get_config_status&0x01) == 0x01)
             {
                 radio.read(&configuracion, sizeof(configuracion));
                 qDebug()<<"Longitud leida = "<< len;
@@ -179,26 +181,38 @@ void nRFTask::WaitingResponse(long cmd)
 
 void nRFTask::WaitingInit(long cmd)
 {
-#ifdef LINUX
-    qDebug()<<"Transmitiendo comando\n";
-    // First, stop listening so we can talk.
-    radio.stopListening();
-    radio.flush_tx();
-    sleep(5);
-    radio.writeFast(&cmd, sizeof(cmd));
-    bool ok = radio.txStandBy(1000);
-    radio.startListening();
-    if(ok)
+    #ifdef LINUX
+    qDebug() << "WAITING INIT - cmd ="<< (char)cmd;
+    if(cmd == GET_CONFIG && get_config_status != 0x01)
     {
-        qDebug()<<"Transmision comando ok\n";
-        estado = WAITING_RESPONSE;
-    this->msleep(100);
+        estado = END_TRANSMISSION;
+    }
+    else if(cmd == GET_TARGET && get_target_status != 0x01)
+    {
+        estado = END_TRANSMISSION;
     }
     else
     {
-        qDebug()<<"Transmision comando failed \n";
-        estado = WAIT_START;
-    radio.flush_tx();
+        qDebug()<<"Transmitiendo comando\n";
+        // First, stop listening so we can talk.
+        radio.stopListening();
+        radio.flush_tx();
+        sleep(5);
+        radio.writeFast(&cmd, sizeof(cmd));
+        bool ok = radio.txStandBy(1000);
+        radio.startListening();
+        if(ok)
+        {
+            qDebug()<<"Transmision comando ok\n";
+            estado = WAITING_RESPONSE;
+            this->msleep(100);
+        }
+        else
+        {
+            qDebug()<<"Transmision comando failed \n";
+            estado = WAIT_START;
+            radio.flush_tx();
+        }
     }
 #endif
 }
