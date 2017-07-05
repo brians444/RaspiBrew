@@ -189,3 +189,12 @@ void MainWindow::on_sendActualSetpButton_clicked()
     }
     task->SetTarget(t);
 }
+
+void MainWindow::on_sendActualConfigButton_clicked()
+{
+    conf t;
+    for(int i = 0; i < CANT; i++)
+    {
+
+    }
+}

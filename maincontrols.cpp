@@ -418,3 +418,43 @@ void MainWindow::on_doubleSpinBox_8_valueChanged(double arg1)
     sliders[7]->setValue(CalcRange(arg1));
 }
 
+conf MainWindow::getConfigFromForm()
+{
+    /*  uint8_t frio;       // Utilizo los bits como booleanos
+        uint8_t calor;      // Utilizo los bits como booleanos
+        uint8_t salida_frio[8];
+        uint8_t salida_calor[8];
+        uint8_t habilitado; // Utilizo los bits como booleanos
+        uint8_t fulltime;
+        float temp[2];
+        QCheckBox *salidaAct[CANT];
+        QCheckBox *frioHab[CANT];
+        QCheckBox *calorHab[CANT];
+        QLineEdit *frioSal[CANT];
+        QLineEdit *calorSal[CANT];
+    */
+    uint8_t tmp;
+    uint8_t mask = 0x01;
+    conf t;
+    t.frio = 0;
+    t.calor = 0;
+    t.habilitado = 0;
+    if(ui->fullTimeCheckBox->isChecked())
+    {
+        t.fulltime = 0x01;
+    }
+    for(int i = 0; i < CANT; i++)
+    {
+        qDebug() << "Mascara = "<< (int)mask;
+        t.salida_frio[i] = this->frioSal[i]->text().toUInt();
+        t.salida_calor[i] = this->calorSal[i]->text().toUInt();
+
+        t.frio += frioHab[i]->isChecked()*mask;
+        t.calor += calorHab[i]->isChecked()*mask;
+        t.habilitado += salidaAct[i]->isChecked()*mask;
+        mask = mask*2;
+    }
+
+
+    return t;
+}

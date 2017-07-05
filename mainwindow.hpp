@@ -113,6 +113,8 @@ private slots:
 
     void on_sendActualSetpButton_clicked();
 
+    void on_sendActualConfigButton_clicked();
+
 signals:
     void newData(sensores data);                                                       // Emitted when new data has arrived
 
@@ -160,6 +162,7 @@ private:
     void UpdateTemps();
     void UpdateTargets();
     void UpdateConfig();
+    conf getConfigFromForm();
 
     double CalcRange(int value) ;
     int CalcRange(double value);
