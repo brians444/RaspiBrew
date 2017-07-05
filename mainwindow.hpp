@@ -111,6 +111,8 @@ private slots:
 
     void on_getTargetUpdateButton_clicked();
 
+    void on_sendActualSetpButton_clicked();
+
 signals:
     void newData(sensores data);                                                       // Emitted when new data has arrived
 

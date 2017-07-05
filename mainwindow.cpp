@@ -145,7 +145,6 @@ void MainWindow::TempReceived(sensores t)
     }
     emit newData(t);
     UpdateTemps();
-
 }
 
 void MainWindow::TargetReceived(target t)
@@ -179,4 +178,14 @@ void MainWindow::on_updateConfigButton_clicked()
 void MainWindow::on_getTargetUpdateButton_clicked()
 {
     this->task->GetTarget();
+}
+
+void MainWindow::on_sendActualSetpButton_clicked()
+{
+    target t;
+    for(int i = 0; i < CANT; i++)
+    {
+        t.set_temp[i] = this->edit_target[i]->value();
+    }
+    task->sendTarget(t);
 }

@@ -256,7 +256,6 @@ void MainWindow::UpdateTemps()
     {
         SetActualTemp(i, temperaturas.temp[i]);
     }
-    emit newData(temperaturas);
 }
 
 void MainWindow::UpdateTargets()

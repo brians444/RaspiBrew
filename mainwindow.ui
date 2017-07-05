@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1083</width>
-    <height>628</height>
+    <height>677</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -1961,6 +1961,13 @@
                 <widget class="QPushButton" name="getTargetUpdateButton">
                  <property name="text">
                   <string>Actualizar Temperaturas Objetivos</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QPushButton" name="sendActualSetpButton">
+                 <property name="text">
+                  <string>Enviar Setpoints Actualizados</string>
                  </property>
                 </widget>
                </item>

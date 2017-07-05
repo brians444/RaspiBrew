@@ -22,6 +22,7 @@
 #include <QObject>
 #include <QWidget>
 
+void showConf(conf configuracion, long len);
 
 
 class nRFTask : public QThread
@@ -60,7 +61,8 @@ private:
 
     void radioInit();
     void Leer(long cmd);
-    void EnviarTarget(target t);
+    void sendTarget(target t);
+    void sendConfig(conf t);
     void SimuloRecepcion(long cmd, long estado);
     void WaitingResponse(long );
     void WaitingInit(long );
