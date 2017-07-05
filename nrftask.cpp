@@ -102,6 +102,10 @@ void nRFTask::Leer(long cmd)
         estado = WAIT_START;
         var++;
     }
+    else
+    {
+        qDebug()<< "Funcion Leer - Estado ="<<(char)estado<<" var = "<<(int)var;
+    }
 #endif
 
 }
@@ -241,6 +245,7 @@ void nRFTask::run()
         {
             var = 0;
         }
+        this->sleep(5);
     }
 }
 
