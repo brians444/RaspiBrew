@@ -112,11 +112,11 @@ void nRFTask::WaitingResponse(long cmd)
     if(radio.available())
     {
         long len = radio.getPayloadSize();
+        qDebug() << "Waiting response - cmd= "<<(char)cmd;
+        qDebug()<<"Longitud leida ="<<(unsigned int)len <<" - COMANDO ="<<(char)cmd;
         if(cmd == GET_TEMPS)
         {
-            qDebug() << "Waiting response - cmd GET TEMPS";
             radio.read(&sens, sizeof(sens));
-            qDebug()<<"Longitud leida = %i "<< len;
             for(int i = 0; i < CANT; i++)
             {
                 qDebug()<<"Temperatura["<<i<<"] = "<<sens.temp[i];
@@ -127,11 +127,9 @@ void nRFTask::WaitingResponse(long cmd)
         }
         else if(cmd == GET_TARGET)
         {
-            qDebug() << "Waiting response - cmd GET TARGET";
-            if( (get_target_status &0x01) == 0x01)
+            if( get_target_status == 0x01)
             {
                 radio.read(&st_target, sizeof(st_target));
-                qDebug()<< "Longitud leida = "<< len <<" - COMANDO ="<<(char)cmd;
                 for(int i = 0; i < CANT; i++)
                 {
                     qDebug()<<"Temperatura objetivo["<<i<<"] = "<<st_target.set_temp[i];
@@ -148,10 +146,8 @@ void nRFTask::WaitingResponse(long cmd)
         }
         else if(GET_CONFIG)
         {
-            qDebug() << "Waiting response - cmd GET CONFIG";
-            if( (get_config_status&0x01) == 0x01)
+            if( get_config_status == 0x01)
             {
-
                 radio.read(&configuracion, sizeof(configuracion));
                 showConf(configuracion, len);
                 if(configuracion.cte1 == 0xF0 && configuracion.cte4 == 0x0F && configuracion.cte3 == 0x11 && configuracion.cte2 == 0x99)
@@ -201,14 +197,6 @@ void nRFTask::WaitingInit(long cmd)
         {
             qDebug()<<"Transmision comando ok\n";
             estado = WAITING_RESPONSE;
-            if(cmd == GET_TARGET)
-            {
-                get_target_status = 0;
-            }
-            else if(cmd == GET_CONFIG)
-            {
-                get_config_status = 0;
-            }
             this->msleep(100);
         }
         else
@@ -350,11 +338,11 @@ void nRFTask::sendConfig(conf t)
     radio.stopListening();
     long cm = SET_CONFIG;
     radio.writeFast(&cm, sizeof(cm));
-    bool resp = radio.txStandBy(100);
+    bool resp = radio.txStandBy(1000);
     if(resp)
     {
         radio.writeFast(&t, sizeof(t));
-        resp = radio.txStandBy(100);
+        resp = radio.txStandBy(1000);
         if(resp)
         {
             qDebug()<<"Transmision CONFIG OK\n";
