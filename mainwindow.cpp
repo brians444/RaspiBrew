@@ -192,9 +192,6 @@ void MainWindow::on_sendActualSetpButton_clicked()
 
 void MainWindow::on_sendActualConfigButton_clicked()
 {
-    conf t;
-    for(int i = 0; i < CANT; i++)
-    {
-
-    }
+    conf t = getConfigFromForm();
+    task->SetConfig(t);
 }

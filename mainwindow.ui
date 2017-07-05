@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1083</width>
-    <height>677</height>
+    <height>706</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -1564,7 +1564,7 @@
                 </widget>
                </item>
                <item>
-                <widget class="QPushButton" name="pushButton">
+                <widget class="QPushButton" name="sendActualConfigButton">
                  <property name="text">
                   <string>Enviar Cambios</string>
                  </property>
