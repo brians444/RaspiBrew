@@ -234,11 +234,11 @@ void nRFTask::run()
         }
         else if(var==3 && set_target_status == 0x01)
         {
-            EnviarTarget(obj);
+            sendTarget(obj);
         }
         else if(var ==4 && set_config_status == 0x01)
         {
-            EnviarConfig(updatedConf);
+            sendConfig(updatedConf);
         }
         else
         {
