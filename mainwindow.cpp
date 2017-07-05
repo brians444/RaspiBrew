@@ -183,7 +183,7 @@ void MainWindow::on_getTargetUpdateButton_clicked()
 void MainWindow::on_sendActualSetpButton_clicked()
 {
     target t;
-    for(int i = 0; i < CANT; i++)s
+    for(int i = 0; i < CANT; i++)
     {
         t.set_temp[i] = this->edit_target[i]->value();
     }
