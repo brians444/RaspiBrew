@@ -334,7 +334,7 @@ void nRFTask::sendTarget(target t)
     }
     else
     {
-        radio.tx_flush();
+        radio.flush_tx();
         qDebug()<<"Transmission Comando Target Error\n";
     }
     radio.startListening();
