@@ -201,6 +201,14 @@ void nRFTask::WaitingInit(long cmd)
         {
             qDebug()<<"Transmision comando ok\n";
             estado = WAITING_RESPONSE;
+            if(cmd == GET_TARGET)
+            {
+                get_target_status = 0;
+            }
+            else if(cmd == GET_CONFIG)
+            {
+                get_config_status = 0;
+            }
             this->msleep(100);
         }
         else
@@ -309,11 +317,11 @@ void nRFTask::sendTarget(target t)
     radio.stopListening();
     long cm = SET_TARGET;
     radio.writeFast(&cm, sizeof(cm));
-    bool resp = radio.txStandBy(100);
+    bool resp = radio.txStandBy(1000);
     if(resp)
     {
         radio.writeFast(&t, sizeof(t));
-        resp = radio.txStandBy(100);
+        resp = radio.txStandBy(1000);
         if(resp)
         {
             qDebug()<<"Transmision Target OK\n";
@@ -326,6 +334,7 @@ void nRFTask::sendTarget(target t)
     }
     else
     {
+        radio.tx_flush();
         qDebug()<<"Transmission Comando Target Error\n";
     }
     radio.startListening();
