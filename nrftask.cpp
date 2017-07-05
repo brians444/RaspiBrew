@@ -245,7 +245,7 @@ void nRFTask::run()
         {
             var = 0;
         }
-        this->sleep(5);
+        this->msleep(5);
     }
 }
 
