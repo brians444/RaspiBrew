@@ -21,6 +21,7 @@
 #include <QThread>
 #include <QObject>
 #include <QWidget>
+#include <QElapsedTimer>
 
 void showConf(conf configuracion, long len);
 
@@ -74,6 +75,8 @@ private:
     unsigned long cmd;
     target obj;
     conf updatedConf;
+
+    QElapsedTimer timer;
 };
 
 #endif // NRFTASK_H

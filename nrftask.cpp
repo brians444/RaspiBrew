@@ -1,4 +1,5 @@
 #include "nrftask.h"
+#include <QElapsedTimer>
 //
 // Hardware configuration
 // Configure the appropriate pins for your connections
@@ -79,6 +80,7 @@ nRFTask::nRFTask()
     get_config_status = 0;
     set_target_status = 0;
     set_config_status = 0;
+    timer.start();
 
 }
 
@@ -92,6 +94,7 @@ void nRFTask::Leer(long cmd)
     if(estado == WAIT_START)
     {
         WaitingInit(cmd);
+        timer.restart();
     }
     else if(estado == WAITING_RESPONSE)
     {
@@ -172,7 +175,11 @@ void nRFTask::WaitingResponse(long cmd)
             this->sleep(2); //Delay after payload responded to, minimize RPi CPU time
         }
     }
-#endif
+    #endif
+    else if(timer.elapsed() > 1000*5)
+    {
+        estado = WAIT_START;
+    }
 }
 
 void nRFTask::WaitingInit(long cmd)
