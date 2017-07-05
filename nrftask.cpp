@@ -216,7 +216,7 @@ void nRFTask::run()
 
     while(1)
     {
-        qDebug() << "Var="<<var;
+        qDebug() << "Var="<<(int)var;
         if(var == 0)
         {
             Leer(GET_CONFIG);
