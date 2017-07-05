@@ -216,6 +216,7 @@ void nRFTask::run()
 
     while(1)
     {
+        qDebug() << "Var="<<var;
         if(var == 0)
         {
             Leer(GET_CONFIG);
@@ -228,11 +229,11 @@ void nRFTask::run()
         {
             Leer(GET_TARGET);
         }
-        else if(var==3 && set_target_status == 0x01)
+        else if(var==3)
         {
             sendTarget(obj);
         }
-        else if(var ==4 && set_config_status == 0x01)
+        else if(var ==4)
         {
             sendConfig(updatedConf);
         }
@@ -300,66 +301,79 @@ void nRFTask::SetConfig(conf ss)
 void nRFTask::sendTarget(target t)
 {
 
-    qDebug()<<"Iniciando transmision TARGET\n";
-    #ifdef LINUX
-    radio.stopListening();
-    long cm = SET_TARGET;
-    radio.writeFast(&cm, sizeof(cm));
-    bool resp = radio.txStandBy(1000);
-    if(resp)
+    if(set_target_status == 0x01)
     {
-        radio.writeFast(&t, sizeof(t));
-        resp = radio.txStandBy(1000);
+        qDebug()<<"Iniciando transmision TARGET\n";
+        #ifdef LINUX
+        radio.stopListening();
+        long cm = SET_TARGET;
+        radio.writeFast(&cm, sizeof(cm));
+        bool resp = radio.txStandBy(1000);
         if(resp)
         {
-            qDebug()<<"Transmision Target OK\n";
-            set_target_status = 0;
+            radio.writeFast(&t, sizeof(t));
+            resp = radio.txStandBy(1000);
+            if(resp)
+            {
+                qDebug()<<"Transmision Target OK\n";
+                set_target_status = 0;
+                var++;
+            }
+            else
+            {
+                qDebug()<<"Transmission Target Error\n";
+            }
         }
         else
         {
-            qDebug()<<"Transmission Target Error\n";
+            radio.flush_tx();
+            qDebug()<<"Transmission Comando Target Error\n";
         }
+        radio.startListening();
+    #endif
     }
     else
     {
-        radio.flush_tx();
-        qDebug()<<"Transmission Comando Target Error\n";
+        var++;
     }
-    radio.startListening();
-#endif
-    var++;
 }
 
 void nRFTask::sendConfig(conf t)
 {
-
-    qDebug()<<"Iniciando transmision CONFIG\n";
-    #ifdef LINUX
-    radio.stopListening();
-    long cm = SET_CONFIG;
-    radio.writeFast(&cm, sizeof(cm));
-    bool resp = radio.txStandBy(1000);
-    if(resp)
+    if(set_config_status == 0x01)
     {
-        radio.writeFast(&t, sizeof(t));
-        resp = radio.txStandBy(1000);
+        qDebug()<<"Iniciando transmision CONFIG\n";
+        #ifdef LINUX
+        radio.stopListening();
+        long cm = SET_CONFIG;
+        radio.writeFast(&cm, sizeof(cm));
+        bool resp = radio.txStandBy(1000);
         if(resp)
         {
-            qDebug()<<"Transmision CONFIG OK\n";
-            set_config_status = 0;
+            radio.writeFast(&t, sizeof(t));
+            resp = radio.txStandBy(1000);
+            if(resp)
+            {
+                qDebug()<<"Transmision CONFIG OK\n";
+                set_config_status = 0;
+                var++;
+            }
+            else
+            {
+                qDebug()<<"Transmission CONFIG Error\n";
+            }
         }
         else
         {
-            qDebug()<<"Transmission CONFIG Error\n";
+            qDebug()<<"Transmission Comando CONFIG Error\n";
         }
+        radio.startListening();
+        #endif
     }
     else
     {
-        qDebug()<<"Transmission Comando CONFIG Error\n";
+        var++;
     }
-    radio.startListening();
-#endif
-    var++;
 }
 
 
