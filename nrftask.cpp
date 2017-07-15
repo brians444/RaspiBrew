@@ -178,6 +178,7 @@ void nRFTask::WaitingResponse(long cmd)
     #endif
     else if(timer.elapsed() > 1000*5)
     {
+        qDebug() << "Timeout Elapsed";
         estado = WAIT_START;
     }
 }
@@ -201,8 +202,8 @@ void nRFTask::WaitingInit(long cmd)
         radio.stopListening();
         radio.flush_tx();
         sleep(5);
-        radio.writeFast(&cmd, sizeof(cmd));
-        bool ok = radio.txStandBy(1000);
+        bool ok = radio.write(&cmd, sizeof(cmd));
+        //bool ok = radio.txStandBy(1000);
         radio.startListening();
         if(ok)
         {
@@ -319,12 +320,12 @@ void nRFTask::sendTarget(target t)
         #ifdef LINUX
         radio.stopListening();
         long cm = SET_TARGET;
-        radio.writeFast(&cm, sizeof(cm));
-        bool resp = radio.txStandBy(1000);
+        bool resp = radio.write(&cm, sizeof(cm));
+        // bool resp = radio.txStandBy(1000);
         if(resp)
         {
-            radio.writeFast(&t, sizeof(t));
-            resp = radio.txStandBy(1000);
+            resp = radio.write(&t, sizeof(t));
+            //resp = radio.txStandBy(1000);
             if(resp)
             {
                 qDebug()<<"Transmision Target OK\n";
@@ -358,12 +359,12 @@ void nRFTask::sendConfig(conf t)
         #ifdef LINUX
         radio.stopListening();
         long cm = SET_CONFIG;
-        radio.writeFast(&cm, sizeof(cm));
-        bool resp = radio.txStandBy(1000);
+        bool resp = radio.write(&cm, sizeof(cm));
+        //bool resp = radio.txStandBy(1000);
         if(resp)
         {
-            radio.writeFast(&t, sizeof(t));
-            resp = radio.txStandBy(1000);
+            resp = radio.write(&t, sizeof(t));
+            //resp = radio.txStandBy(1000);
             if(resp)
             {
                 qDebug()<<"Transmision CONFIG OK\n";
@@ -388,6 +389,19 @@ void nRFTask::sendConfig(conf t)
     }
 }
 
+
+void showConf(conf configuracion, long len)
+{
+    qDebug()<<"Longitud leida = "<< len;
+    qDebug()<<"Temperatura[9] = "<< configuracion.temp[0];
+    qDebug()<<"Temperatura[10] = "<< configuracion.temp[1];
+    qDebug()<<"salidas calor = "<< configuracion.salida_calor;
+    qDebug()<<"salidas frio = "<< configuracion.salida_frio;
+    qDebug()<<"habilitado= "<< configuracion.habilitado;
+    qDebug()<<"habilitado= "<< configuracion.fulltime;
+    qDebug()<<"calor= "<< configuracion.calor;
+    qDebug()<<"habilitado= "<< configuracion.frio;
+}
 
 
 void nRFTask::SimuloRecepcion(long cmd, long estado)
@@ -427,17 +441,4 @@ void nRFTask::SimuloRecepcion(long cmd, long estado)
     }
     this->sleep(4);
 
-}
-
-void showConf(conf configuracion, long len)
-{
-    qDebug()<<"Longitud leida = "<< len;
-    qDebug()<<"Temperatura[9] = "<< configuracion.temp[0];
-    qDebug()<<"Temperatura[10] = "<< configuracion.temp[1];
-    qDebug()<<"salidas calor = "<< configuracion.salida_calor;
-    qDebug()<<"salidas frio = "<< configuracion.salida_frio;
-    qDebug()<<"habilitado= "<< configuracion.habilitado;
-    qDebug()<<"habilitado= "<< configuracion.fulltime;
-    qDebug()<<"calor= "<< configuracion.calor;
-    qDebug()<<"habilitado= "<< configuracion.frio;
 }
