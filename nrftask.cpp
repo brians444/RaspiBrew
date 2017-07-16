@@ -120,7 +120,7 @@ void nRFTask::WaitingResponse(long cmd)
     {
         long len = radio.getPayloadSize();
         debug_now("Waiting response - cmd= "+QString((char)cmd));
-        debug_now("Longitud leida ="+QString::number((unsigned int)len)+" - COMANDO ="+QString((char)cmd);
+        debug_now("Longitud leida ="+QString::number((unsigned int)len)+" - COMANDO ="+QString((char)cmd));
         if(cmd == GET_TEMPS)
         {
             radio.read(&sens, sizeof(sens));
@@ -385,12 +385,14 @@ void showConf(conf configuracion, long len)
     debug_now("Longitud leida = "+QString::number(len));
     debug_now("Temperatura[9] = "+QString::number(configuracion.temp[0]));
     debug_now("Temperatura[10] = "+QString::number(configuracion.temp[1]));
+    /* ERROR HERE WITH CONVERSION TO QSTRING
+     *
     debug_now("salidas calor = "+QString::number( configuracion.salida_calor));
     debug_now("salidas frio = "+QString(configuracion.salida_frio));
     debug_now("habilitado= "+QString(configuracion.habilitado));
     debug_now("fulltime= "+QString(configuracion.fulltime));
     debug_now("calor= "+QString(configuracion.calor));
-    debug_now("frio= "+QString(configuracion.frio));
+    debug_now("frio= "+QString(configuracion.frio));*/
 }
 
 
