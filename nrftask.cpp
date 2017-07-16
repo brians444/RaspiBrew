@@ -398,7 +398,7 @@ void showConf(conf configuracion, long len)
 
 void nRFTask::SimuloRecepcion(long cmd, long estado)
 {
-    debug_now("Simulando cmd="+QString((char)cmd)+"  Estado = "+QString(estado));
+    debug_now("Simulando cmd="+QString((char)cmd)+"  Estado = "+QString::number(estado));
     var++;
     if(cmd == GET_TEMPS)
     {
