@@ -47,12 +47,6 @@ RF24 radio(RPI_BPLUS_GPIO_J8_15,RPI_BPLUS_GPIO_J8_24, BCM2835_SPI_SPEED_8MHZ);
 //Note: Specify SPI BUS 0 or 1 instead of CS pin number.
 //RF24 radio(59,0);
 
-#ifdef DEBUG
-#define debug_now()   qDebug()
-#else
-#define debug_now() 0
-#endif
-
 
 
 nRFTask::nRFTask()
@@ -112,7 +106,7 @@ void nRFTask::Leer(long cmd)
     }
     else
     {
-        debug_now()<< "Funcion Leer - Estado ="<<(char)estado<<" var = "<<(int)var;
+        debug_now("Funcion Leer - Estado ="+QString((char)estado)+" var = "+QString((int)var));
     }
 #endif
 
@@ -124,14 +118,14 @@ void nRFTask::WaitingResponse(long cmd)
     if(radio.available())
     {
         long len = radio.getPayloadSize();
-        debug_now() << "Waiting response - cmd= "<<(char)cmd;
-        debug_now()<<"Longitud leida ="<<(unsigned int)len <<" - COMANDO ="<<(char)cmd;
+        debug_now("Waiting response - cmd= "+QString((char)cmd));
+        debug_now("Longitud leida ="+QString::number((unsigned int)len)+" - COMANDO ="+QString((char)cmd);
         if(cmd == GET_TEMPS)
         {
             radio.read(&sens, sizeof(sens));
             for(int i = 0; i < CANT; i++)
             {
-                debug_now()<<"Temperatura["<<i<<"] = "<<sens.temp[i];
+                debug_now("Temperatura["+QString::number(i)+"] = "+QString::number(sens.temp[i]));
             }
             emit TempGetReady(sens);
             estado = END_TRANSMISSION;
@@ -144,7 +138,7 @@ void nRFTask::WaitingResponse(long cmd)
                 radio.read(&st_target, sizeof(st_target));
                 for(int i = 0; i < CANT; i++)
                 {
-                    debug_now()<<"Temperatura objetivo["<<i<<"] = "<<st_target.set_temp[i];
+                    debug_now("Temperatura objetivo["+QString::number(i)+"] = "+QString::number(st_target.set_temp[i]));
                 }
                 emit TargetGetReady(st_target);
                 get_target_status = 0;
@@ -183,7 +177,7 @@ void nRFTask::WaitingResponse(long cmd)
     #endif
     else if(timer.elapsed() > 1000*5)
     {
-        debug_now() << "Timeout Elapsed";
+        debug_now("Timeout Elapsed");
         estado = WAIT_START;
     }
 }
@@ -191,7 +185,7 @@ void nRFTask::WaitingResponse(long cmd)
 void nRFTask::WaitingInit(long cmd)
 {
     #ifdef LINUX
-    debug_now() << "WAITING INIT - cmd ="<< (char)cmd;
+    debug_now("WAITING INIT - cmd ="+QString((char)cmd));
     if(cmd == GET_CONFIG && get_config_status != 0x01)
     {
         estado = END_TRANSMISSION;
@@ -202,7 +196,7 @@ void nRFTask::WaitingInit(long cmd)
     }
     else
     {
-        debug_now()<<"Transmitiendo comando cmd = "<<(char)cmd;
+        debug_now("Transmitiendo comando cmd = "+QString((char)cmd));
         // First, stop listening so we can talk.
         radio.stopListening();
         radio.flush_tx();
@@ -211,13 +205,13 @@ void nRFTask::WaitingInit(long cmd)
         radio.startListening();
         if(ok)
         {
-            debug_now()<<"Transmision comando ok\n";
+            debug_now("Transmision comando ok\n");
             estado = WAITING_RESPONSE;
             this->msleep(100);
         }
         else
         {
-            debug_now()<<"Transmision comando failed \n";
+            debug_now("Transmision comando failed \n");
             estado = WAIT_START;
             radio.flush_tx();
         }
@@ -319,7 +313,7 @@ void nRFTask::sendTarget(target t)
 
     if(set_target_status == 0x01)
     {
-        debug_now()<<"Iniciando transmision TARGET\n";
+        debug_now("Iniciando transmision TARGET\n");
         radio.stopListening();
         long cm = SET_TARGET;
         bool resp = radio.write(&cm, sizeof(cm));
@@ -328,19 +322,19 @@ void nRFTask::sendTarget(target t)
             resp = radio.write(&t, sizeof(t));
             if(resp)
             {
-                debug_now()<<"Transmision Target OK\n";
+                debug_now("Transmision Target OK\n");
                 set_target_status = 0;
                 var++;
             }
             else
             {
-                debug_now()<<"Transmission Target Error\n";
+                debug_now("Transmission Target Error\n");
             }
         }
         else
         {
             radio.flush_tx();
-            debug_now()<<"Transmission Comando Target Error\n";
+            debug_now("Transmission Comando Target Error\n");
         }
         radio.startListening();
     }
@@ -354,7 +348,7 @@ void nRFTask::sendConfig(conf t)
 {
     if(set_config_status == 0x01)
     {
-        debug_now()<<"Iniciando transmision CONFIG\n";
+        debug_now("Iniciando transmision CONFIG\n");
         radio.stopListening();
         long cm = SET_CONFIG;
         bool resp = radio.write(&cm, sizeof(cm));
@@ -363,18 +357,18 @@ void nRFTask::sendConfig(conf t)
             resp = radio.write(&t, sizeof(t));
             if(resp)
             {
-                debug_now()<<"Transmision CONFIG OK\n";
+                debug_now("Transmision CONFIG OK\n");
                 set_config_status = 0;
                 var++;
             }
             else
             {
-                debug_now()<<"Transmission CONFIG Error\n";
+                debug_now("Transmission CONFIG Error\n");
             }
         }
         else
         {
-            debug_now()<<"Transmission Comando CONFIG Error\n";
+            debug_now("Transmission Comando CONFIG Error\n");
         }
         radio.startListening();
     }
@@ -387,21 +381,21 @@ void nRFTask::sendConfig(conf t)
 
 void showConf(conf configuracion, long len)
 {
-    debug_now()<<"Longitud leida = "<< len;
-    debug_now()<<"Temperatura[9] = "<< configuracion.temp[0];
-    debug_now()<<"Temperatura[10] = "<< configuracion.temp[1];
-    debug_now()<<"salidas calor = "<< configuracion.salida_calor;
-    debug_now()<<"salidas frio = "<< configuracion.salida_frio;
-    debug_now()<<"habilitado= "<< configuracion.habilitado;
-    debug_now()<<"habilitado= "<< configuracion.fulltime;
-    debug_now()<<"calor= "<< configuracion.calor;
-    debug_now()<<"habilitado= "<< configuracion.frio;
+    debug_now("Longitud leida = "+QString::number(len));
+    debug_now("Temperatura[9] = "+QString::number(configuracion.temp[0]));
+    debug_now("Temperatura[10] = "+QString::number(configuracion.temp[1]));
+    debug_now("salidas calor = "+QString::number( configuracion.salida_calor));
+    debug_now("salidas frio = "+QString(configuracion.salida_frio));
+    debug_now("habilitado= "+QString(configuracion.habilitado));
+    debug_now("fulltime= "+QString(configuracion.fulltime));
+    debug_now("calor= "+QString(configuracion.calor));
+    debug_now("frio= "+QString(configuracion.frio));
 }
 
 
 void nRFTask::SimuloRecepcion(long cmd, long estado)
 {
-    debug_now()<< "Simulando cmd="<<(char)cmd<<"  Estado = "<<estado;
+    debug_now("Simulando cmd="+QString((char)cmd)+"  Estado = "+QString(estado));
     var++;
     if(cmd == GET_TEMPS)
     {
@@ -438,3 +432,9 @@ void nRFTask::SimuloRecepcion(long cmd, long estado)
 
 }
 
+void debug_now(QString d)
+{
+#ifdef DEBUG
+    qDebug() << d;
+#endif
+}
