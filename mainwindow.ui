@@ -1522,10 +1522,10 @@
                 <widget class="Led" name="fled2" native="true"/>
                </item>
                <item row="3" column="6">
-                <widget class="QWidget" name="fled3" native="true"/>
+                <widget class="Led" name="fled3" native="true"/>
                </item>
                <item row="4" column="6">
-                <widget class="QWidget" name="fled4" native="true"/>
+                <widget class="Led" name="fled4" native="true"/>
                </item>
                <item row="5" column="6">
                 <widget class="Led" name="fled5" native="true"/>
