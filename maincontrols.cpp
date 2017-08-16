@@ -191,6 +191,24 @@ void MainWindow::createUI()
     calorSal[6] = ui->salidaCalorLineEdit_7;
     calorSal[7] = ui->salidaCalorLineEdit_8;
 
+    led_frio[0] = ui->fled1;
+    led_frio[1] = ui->fled2;
+    led_frio[2] = ui->fled3;
+    led_frio[3] = ui->fled4;
+    led_frio[4] = ui->fled5;
+    led_frio[5] = ui->fled6;
+    led_frio[6] = ui->fled7;
+    led_frio[7] = ui->fled8;
+
+    led_calor[0] = ui->hled1;
+    led_calor[1] = ui->hled2;
+    led_calor[2] = ui->hled3;
+    led_calor[3] = ui->hled4;
+    led_calor[4] = ui->hled5;
+    led_calor[5] = ui->hled6;
+    led_calor[6] = ui->hled7;
+    led_calor[7] = ui->hled8;
+
 
 }
 /******************************************************************************************************************/
@@ -281,6 +299,9 @@ void MainWindow::UpdateConfig()
     QCheckBox *calorHab[CANT];
     QLineEdit *frioSal[CANT];
     QLineEdit *calorSal[CANT];
+
+    uint8_t estado_bombas;
+    uint8_t estado_salidas_cold, estado_salidas_hot;
 */
     uint8_t tmp;
     uint8_t mask = 0x01;
@@ -320,6 +341,27 @@ void MainWindow::UpdateConfig()
         }
         frioSal[i]->setText(QString::number(configuracion.salida_frio[i]));
         calorSal[i]->setText(QString::number(configuracion.salida_calor[i]));
+        // Prendo Leds de valvulas frio
+        tmp = configuracion.estado_salidas_cold&mask;
+        if(tmp>0)
+        {
+            led_frio[i]->setChecked(1);
+        }
+        else
+        {
+            led_frio[i]->setChecked(0);
+        }
+        // Prendo Leds de valvulas frio
+        tmp = configuracion.estado_salidas_hot&mask;
+        if(tmp>0)
+        {
+            led_calor[i]->setChecked(1);
+        }
+        else
+        {
+            led_calor[i]->setChecked(0);
+        }
+
         mask = mask*2;
     }
 

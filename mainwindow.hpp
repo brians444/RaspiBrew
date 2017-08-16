@@ -39,6 +39,7 @@
 #include "nrftask.h"
 // Analog Widgets
 #include "thermometer.h"
+#include "led.h"
 // Base de datos
 #include "database.h"
 #include <QTime>
@@ -122,6 +123,8 @@ private:
     Ui::MainWindow *ui;
 
     ThermoMeter *termometros[CANT];
+    Led *led_frio[CANT];
+    Led *led_calor[CANT];
     QLabel *temps_actuales[CANT];
 
     QCheckBox *salidaAct[CANT];

@@ -1240,7 +1240,7 @@
                <item row="0" column="6">
                 <widget class="QLabel" name="label_52">
                  <property name="text">
-                  <string>TextLabel</string>
+                  <string>Valvula Frio</string>
                  </property>
                 </widget>
                </item>
@@ -1507,6 +1507,61 @@
                   <string>CALOR</string>
                  </property>
                 </widget>
+               </item>
+               <item row="0" column="7">
+                <widget class="QLabel" name="label_53">
+                 <property name="text">
+                  <string>Valvula Calor</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="1" column="6">
+                <widget class="Led" name="fled1" native="true"/>
+               </item>
+               <item row="2" column="6">
+                <widget class="Led" name="fled2" native="true"/>
+               </item>
+               <item row="3" column="6">
+                <widget class="QWidget" name="fled3" native="true"/>
+               </item>
+               <item row="4" column="6">
+                <widget class="QWidget" name="fled4" native="true"/>
+               </item>
+               <item row="5" column="6">
+                <widget class="Led" name="fled5" native="true"/>
+               </item>
+               <item row="6" column="6">
+                <widget class="Led" name="fled6" native="true"/>
+               </item>
+               <item row="7" column="6">
+                <widget class="Led" name="fled7" native="true"/>
+               </item>
+               <item row="8" column="6">
+                <widget class="Led" name="fled8" native="true"/>
+               </item>
+               <item row="1" column="7">
+                <widget class="Led" name="hled1" native="true"/>
+               </item>
+               <item row="2" column="7">
+                <widget class="Led" name="hled2" native="true"/>
+               </item>
+               <item row="3" column="7">
+                <widget class="Led" name="hled3" native="true"/>
+               </item>
+               <item row="4" column="7">
+                <widget class="Led" name="hled4" native="true"/>
+               </item>
+               <item row="5" column="7">
+                <widget class="Led" name="hled5" native="true"/>
+               </item>
+               <item row="6" column="7">
+                <widget class="Led" name="hled6" native="true"/>
+               </item>
+               <item row="7" column="7">
+                <widget class="Led" name="hled7" native="true"/>
+               </item>
+               <item row="8" column="7">
+                <widget class="Led" name="hled8" native="true"/>
                </item>
               </layout>
              </item>
@@ -2147,6 +2202,12 @@
    <class>ThermoMeter</class>
    <extends>QWidget</extends>
    <header>thermometer.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>Led</class>
+   <extends>QWidget</extends>
+   <header>led.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>
