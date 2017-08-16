@@ -157,7 +157,7 @@ void nRFTask::WaitingResponse(long cmd)
             {
                 radio.read(&configuracion, sizeof(configuracion));
                 showConf(configuracion, len);
-                if(configuracion.cte1 == 0xF0 && configuracion.cte4 == 0x0F && configuracion.cte3 == 0x11 && configuracion.cte2 == 0x99)
+                if(configuracion.cte1 == 0xF0)
                 {
                     emit ConfigGetReady(configuracion);
                     estado = END_TRANSMISSION;
